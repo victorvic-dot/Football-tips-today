@@ -1,0 +1,11 @@
+{
+  "free_tips": [
+    { "match": "Arsenal vs Chelsea", "tip": "Home Win", "odds": "1.65" },
+    { "match": "Dortmund vs PSG", "tip": "Over 2.5", "odds": "1.50" }
+  ],
+  "history": [
+    { "date": "May 06", "match": "Real Madrid vs Bayern", "status": "WIN" },
+    { "date": "May 05", "match": "Liverpool vs Spurs", "status": "WIN" },
+    { "date": "May 04", "match": "Man City vs Wolves", "status": "LOSS" }
+  ]
+}
