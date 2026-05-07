@@ -3,32 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviator Predictions | Win Big</title>
+    <title>Aviator Predictions | Expert Football Tips</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://checkout.flutterwave.com/v3.js"></script>
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .hero { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 40px 0; text-align: center; margin-bottom: 30px; }
-        .card { border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .badge-win { background-color: #28a745; }
-        .badge-loss { background-color: #dc3545; }
-        .btn-vip { background-color: #ffc107; color: #000; font-weight: bold; border-radius: 30px; padding: 12px 30px; }
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Arial, sans-serif; }
+        .hero { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; padding: 60px 0; text-align: center; margin-bottom: 30px; border-bottom: 4px solid #ffc107; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 25px; }
+        .section-title { font-weight: 700; color: #1e3c72; border-left: 5px solid #ffc107; padding-left: 15px; margin-bottom: 20px; }
+        .badge-win { background-color: #28a745; color: white; }
+        .badge-loss { background-color: #dc3545; color: white; }
+        .btn-vip { background-color: #ffc107; color: #000; font-weight: bold; border-radius: 50px; padding: 15px 40px; transition: 0.3s; border: none; }
+        .btn-vip:hover { background-color: #e0a800; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
 <div class="hero">
-    <h1>AVIATOR PREDICTIONS</h1>
-    <p>Expert Football Analysis & VIP Tips</p>
+    <div class="container">
+        <h1 class="display-4 fw-bold">AVIATOR TIPS</h1>
+        <p class="lead">Accurate Football Predictions & Daily VIP Tickets</p>
+    </div>
 </div>
 
 <div class="container">
     <div class="card p-4">
-        <h3 class="mb-3">Today's Free Tips</h3>
+        <h3 class="section-title">Today's Free Tips</h3>
         <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-dark">
-                    <tr><th>Match</th><th>Tip</th><th>Odds</th></tr>
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Match</th>
+                        <th>Prediction</th>
+                        <th>Odds</th>
+                    </tr>
                 </thead>
                 <tbody id="free-tips-body">
                     </tbody>
@@ -36,21 +44,96 @@
         </div>
     </div>
 
-    <div class="card p-4 text-center border-warning" style="border: 2px solid;">
-        <h3>🔒 VIP Section</h3>
-        <p>Get our most accurate high-odds tickets.</p>
-        <button onclick="makePayment()" class="btn btn-vip">GET VIP ACCESS (20,000 UGX)</button>
+    <div class="card p-5 text-center bg-white border-warning" style="border-width: 2px;">
+        <h2 class="fw-bold mb-3">🔒 Unlock VIP Ticket</h2>
+        <p class="text-muted mb-4">Get 3-5 high-accuracy matches (Odds 5.0 - 15.0). Payment active until next update.</p>
+        <button onclick="makePayment()" class="btn btn-vip shadow-sm">PAY 20,000 UGX VIA MOBILE MONEY</button>
+        <div class="mt-3">
+            <small class="text-muted">Secure payment powered by Flutterwave</small>
+        </div>
     </div>
 
     <div class="card p-4">
-        <h3 class="mb-3">Recent Results (History)</h3>
+        <h3 class="section-title">Winning History</h3>
         <div class="table-responsive">
             <table class="table table-sm">
                 <thead>
-                    <tr><th>Date</th><th>Match</th><th>Result</th></tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Match</th>
+                        <th>Result</th>
+                    </tr>
                 </thead>
                 <tbody id="history-body">
                     </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center py-4 text-muted">
+    <p>&copy; 2026 Victor Aviator Predictions. All rights reserved.</p>
+</footer>
+
+<script>
+    // --- LOAD DATA AUTOMATICALLY ---
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            // Populate Free Tips
+            const freeBody = document.getElementById('free-tips-body');
+            data.free_tips.forEach(item => {
+                freeBody.innerHTML += `
+                    <tr>
+                        <td class="fw-bold">${item.match}</td>
+                        <td>${item.tip}</td>
+                        <td><span class="badge bg-dark">${item.odds}</span></td>
+                    </tr>`;
+            });
+
+            // Populate History
+            const historyBody = document.getElementById('history-body');
+            data.history.forEach(item => {
+                const statusClass = item.status === 'WIN' ? 'badge-win' : 'badge-loss';
+                historyBody.innerHTML += `
+                    <tr>
+                        <td>${item.date}</td>
+                        <td>${item.match}</td>
+                        <td><span class="badge ${statusClass}">${item.status}</span></td>
+                    </tr>`;
+            });
+        })
+        .catch(err => console.error("Error loading predictions:", err));
+
+    // --- FLUTTERWAVE PAYMENT CONFIG ---
+    function makePayment() {
+        FlutterwaveCheckout({
+            public_key: "FLWPUBK_TEST-3c26ffec454276a75875b18eaa8210f1-X",
+            tx_ref: "AVI-" + Date.now(),
+            amount: 20000,
+            currency: "UGX",
+            payment_options: "mobilemoneyuganda, card",
+            callback: function (paymentData) {
+                console.log("Payment Successful:", paymentData);
+                if (paymentData.status === "successful" || paymentData.status === "completed") {
+                    // Redirect to your secret page
+                    window.location.href = "vip-tips-private.html";
+                }
+            },
+            onclose: function() {
+                console.log("Payment window closed.");
+            },
+            customizations: {
+                title: "Aviator VIP Access",
+                description: "Full access to today's premium football tips.",
+                logo: "https://cdn-icons-png.flaticon.com/512/732/732200.png",
+            },
+        });
+    }
+</script>
+
+</body>
+</html>
             </table>
         </div>
     </div>
